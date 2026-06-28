@@ -193,9 +193,9 @@ class pin
     //        HHC
     //===============================
 //    #if MEGA
-//    if(Type==HHC) { scanHHC(_pin,analogRead(_pin)/8); return; }
+//    if(Type==HHC) { scanHHC(_pin, 127 - (analogRead(_pin)/8)); return; }
 //    #else
-    if(Type==HHC) { scanHHC(pin,analogRead(sensor)/8); return; }
+    if(Type==HHC) { scanHHC(pin, 127 - (analogRead(sensor)/8)); return; }
 //    #endif
     
     //===============================
