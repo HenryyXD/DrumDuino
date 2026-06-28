@@ -193,9 +193,9 @@ class pin
     //        HHC
     //===============================
 //    #if MEGA
-//    if(Type==HHC) { scanHHC(_pin, 127 - (analogRead(_pin)/8)); return; }
+//    if(Type==HHC) { scanHHC(_pin, (analogRead(_pin)/8)); return; }
 //    #else
-    if(Type==HHC) { scanHHC(pin, 127 - (analogRead(sensor)/8)); return; }
+    if(Type==HHC) { scanHHC(pin, (analogRead(sensor)/8)); return; }
 //    #endif
     
     //===============================
@@ -666,6 +666,7 @@ class pin
   //===============================
   void scanHHC(byte pin,byte sensorReading)
   {
+    static unsigned long lastFootCloseTime = 0;
     if ((GlobalTime-Time) > MaskTime)
     {
       if(sensorReading>(/*yn_1*/MaxReading+Thresold) || sensorReading<(/*yn_1*/MaxReading-Thresold))
@@ -686,12 +687,17 @@ class pin
         MaxReading=sensorReading;//LastReading
         
         //Foot Splash
-        if(m>0 && m>HHFootThresoldSensor[0])
-          State=Footsplash_Time;
+        if(m<0 && -m>HHFootThresoldSensor[0]) {
+          if ((GlobalTime - lastFootCloseTime) < 500) { // only trigger splash if recently closed
+            State=Footsplash_Time;
+          }
+        }
 
         //FootClose
-        else if(m<0 && -m>HHFootThresoldSensor[1])
+        else if(m>0 && m>HHFootThresoldSensor[1]) {
           State=Footclose_Time;
+          lastFootCloseTime = GlobalTime;
+        }
 
         Time=GlobalTime;
       }

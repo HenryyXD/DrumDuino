@@ -65,6 +65,9 @@ void setup()
   
   LoadAllEEPROM();
   
+  // Força a nota do Foot Splash para 0 (C-2), ignorando o que estava salvo na memória EEPROM
+  HHFootNoteSensor[0] = 0;
+  
   #if defined(__AVR__)
   
   #if FASTADC

@@ -23,7 +23,7 @@
 #define USE_595           0     // 1 with nanoDrum and v0.8
 #define USE_PROFILER      0     // Use Profiler (only for Debug)
 #define FASTADC           1     // FASTADC = Prescaler_16, VERYFASTADC = Prescaler_8, VERYVERYFASTADC = Prescaler_4
-#define SERIALSPEED       1     // 1 = 115200, 0 = 31250 (MIDI) , picoMIDI use 115200 therefore with nanoDrum and v0.8 use 1
+#define SERIALSPEED       0     // 1 = 115200, 0 = 31250 (MIDI) , picoMIDI use 115200 therefore with nanoDrum and v0.8 use 1
 #define USE_DEFAULT_NAME  1     // Use Default Name for pin in LCD Menu
 #define USE_PISERIAL      0     // Use Raspberry Pi serial
 #define USE_WAVTRIGGER    0     // Use WavTrigger
@@ -119,7 +119,7 @@ byte NSensor=2;
 //===HiHat==================
 byte HHNoteSensor[]     = {20,50,80,100};
 byte HHThresoldSensor[] = {48,36,24,12};
-byte HHFootNoteSensor[] = {59,48};
+byte HHFootNoteSensor[] = {0,48};
 byte HHFootThresoldSensor[] = {127,127};
 //===========================
 
