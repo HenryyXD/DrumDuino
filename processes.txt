@@ -1,0 +1,287 @@
+﻿
+Name                                 ExecutablePath                                                                    
+----                                 --------------                                                                    
+AdjustService.exe                                                                                                      
+AggregatorHost.exe                                                                                                     
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+Antigravity.exe                      C:\Users\pc gamer\AppData\Local\Programs\Antigravity\Antigravity.exe              
+ApplicationFrameHost.exe             C:\Windows\system32\ApplicationFrameHost.exe                                      
+armsvc.exe                                                                                                             
+audiodg.exe                                                                                                            
+backgroundTaskHost.exe               C:\Windows\system32\backgroundTaskHost.exe                                        
+CalculatorApp.exe                    C:\Program Files\WindowsApps\Microsoft.WindowsCalculator_11.2508.4.0_x64__8weky...
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+chrome.exe                           C:\Program Files\Google\Chrome\Application\chrome.exe                             
+CompPkgSrv.exe                       C:\Windows\System32\CompPkgSrv.exe                                                
+conhost.exe                          C:\Windows\system32\conhost.exe                                                   
+conhost.exe                                                                                                            
+crashpad_handler.exe                 C:\Users\pc gamer\AppData\Roaming\uTorrent Web\crashpad_handler.exe               
+csrss.exe                                                                                                              
+csrss.exe                                                                                                              
+ctfmon.exe                                                                                                             
+dasHost.exe                                                                                                            
+deep_service.exe                                                                                                       
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCool.exe                         Z:\Programas\DeepCool\DeepCool.exe                                                
+DeepCoolDisplayService.exe                                                                                             
+dllhost.exe                          C:\Windows\system32\DllHost.exe                                                   
+dllhost.exe                                                                                                            
+DS4Windows.exe                                                                                                         
+DSAService.exe                                                                                                         
+DSATray.exe                          C:\Program Files (x86)\Intel\Driver and Support Assistant\x86\DSATray.exe         
+DSAUpdateService.exe                                                                                                   
+dwm.exe                                                                                                                
+EncoderServer.exe                                                                                                      
+esrv.exe                             C:\Program Files\Intel\SUR\QUEENCREEK\x64\esrv.exe                                
+esrv_svc.exe                                                                                                           
+explorer.exe                         C:\Windows\Explorer.EXE                                                           
+fontdrvhost.exe                                                                                                        
+fontdrvhost.exe                                                                                                        
+GameInputRedistService.exe           C:\Program Files\Microsoft GameInput\x64\GameInputRedistService.exe               
+GameInputRedistService.exe                                                                                             
+GameInputSvc.exe                                                                                                       
+GameInputSvc.exe                                                                                                       
+gamingservices.exe                                                                                                     
+gamingservicesnet.exe                                                                                                  
+GigabyteUpdateService.exe                                                                                              
+helper.exe                           C:\Users\pc gamer\AppData\Roaming\uTorrent Web\helper\helper.exe                  
+jhi_service.exe                                                                                                        
+jusched.exe                          C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe                  
+language_server.exe                  C:\Users\pc gamer\AppData\Local\Programs\Antigravity\resources\bin\language_ser...
+lghub_updater.exe                                                                                                      
+Lightshot.exe                        C:\Program Files (x86)\Skillbrains\lightshot\5.5.0.7\Lightshot.exe                
+LockApp.exe                          C:\Windows\SystemApps\Microsoft.LockApp_cw5n1h2txyewy\LockApp.exe                 
+LsaIso.exe                                                                                                             
+lsass.exe                                                                                                              
+Memory Compression                                                                                                     
+MpDefenderCoreService.exe                                                                                              
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+msedgewebview2.exe                   C:\Program Files (x86)\Microsoft\EdgeWebView\Application\149.0.4022.80\msedgewe...
+MSIAfterburner.exe                                                                                                     
+MsMpEng.exe                                                                                                            
+MusNotifyIcon.exe                    C:\Windows\system32\MusNotifyIcon.exe                                             
+NisSrv.exe                                                                                                             
+nssm.exe                                                                                                               
+nvcontainer.exe                      C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe                   
+nvcontainer.exe                                                                                                        
+nvcontainer.exe                      C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe                   
+nvcontainer.exe                                                                                                        
+NVDisplay.Container.exe                                                                                                
+NVDisplay.Container.exe                                                                                                
+NVIDIA Overlay.exe                   C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe             
+NVIDIA Overlay.exe                   C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe             
+NVIDIA Overlay.exe                   C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe             
+NVIDIA Overlay.exe                   C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe             
+NVIDIA Overlay.exe                   C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe             
+nvsphelper64.exe                                                                                                       
+PhoneExperienceHost.exe              C:\Program Files\WindowsApps\Microsoft.YourPhone_1.25072.79.0_x64__8wekyb3d8bbw...
+PnkBstrA.exe                                                                                                           
+powershell.exe                       C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe                         
+Registry                                                                                                               
+RtkAudUService64.exe                                                                                                   
+RtkAudUService64.exe                 C:\Windows\System32\DriverStore\FileRepository\realtekservice.inf_amd64_b751f9e...
+RTSS.exe                                                                                                               
+RTSSHooksLoader64.exe                                                                                                  
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RuntimeBroker.exe                    C:\Windows\System32\RuntimeBroker.exe                                             
+RvControlSvc.exe                                                                                                       
+SAClient.exe                         C:\Program Files\WindowsApps\SAMSUNGELECTRONICSCO.LTD.SamsungAccount_1.26.1090....
+SAService.exe                                                                                                          
+SearchApp.exe                        C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy\SearchApp.exe        
+SearchApp.exe                        C:\Windows\SystemApps\Microsoft.Windows.Search_cw5n1h2txyewy\SearchApp.exe        
+SearchFilterHost.exe                                                                                                   
+SearchIndexer.exe                                                                                                      
+SearchProtocolHost.exe                                                                                                 
+SearchProtocolHost.exe               C:\Windows\system32\SearchProtocolHost.exe                                        
+Secure System                                                                                                          
+SecurityHealthService.exe                                                                                              
+SecurityHealthSystray.exe            C:\Windows\System32\SecurityHealthSystray.exe                                     
+services.exe                                                                                                           
+ShellExperienceHost.exe              C:\Windows\SystemApps\ShellExperienceHost_cw5n1h2txyewy\ShellExperienceHost.exe   
+sihost.exe                           C:\Windows\system32\sihost.exe                                                    
+smartscreen.exe                      C:\Windows\System32\smartscreen.exe                                               
+SmartThings.AVplayer.exe             C:\Program Files\WindowsApps\SAMSUNGELECTRONICSCO.LTD.SmartThingsWindows_1.2613...
+SmartThings.exe                      C:\Program Files\WindowsApps\SAMSUNGELECTRONICSCO.LTD.SmartThingsWindows_1.2613...
+smss.exe                                                                                                               
+spoolsv.exe                                                                                                            
+sqlwriter.exe                                                                                                          
+ss_conn_service.exe                                                                                                    
+ss_conn_service2.exe                                                                                                   
+StartMenuExperienceHost.exe          C:\Windows\SystemApps\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\S...
+steam.exe                            F:\Program Files (x86)\Steam\steam.exe                                            
+steamservice.exe                                                                                                       
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+steamwebhelper.exe                   F:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe                 
+SurSvc.exe                                                                                                             
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                          C:\Windows\system32\svchost.exe                                                   
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                          C:\Windows\System32\svchost.exe                                                   
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                                                                                                            
+svchost.exe                          C:\Windows\system32\svchost.exe                                                   
+svchost.exe                                                                                                            
+svchost.exe                          C:\Windows\system32\svchost.exe                                                   
+svchost.exe                                                                                                            
+svchost.exe                          C:\Windows\system32\svchost.exe                                                   
+System                                                                                                                 
+System Idle Process                                                                                                    
+SystemSettings.exe                   C:\Windows\ImmersiveControlPanel\SystemSettings.exe                               
+tailscaled.exe                                                                                                         
+tailscaled.exe                                                                                                         
+taskhostw.exe                        C:\Windows\system32\taskhostw.exe                                                 
+Taskmgr.exe                                                                                                            
+TextInputHost.exe                    C:\Windows\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\TextInputHost.exe 
+Twinkle Tray.exe                     C:\Program Files\WindowsApps\38002AlexanderFrangos.TwinkleTray_2025.11225.11438...
+Twinkle Tray.exe                     C:\Program Files\WindowsApps\38002AlexanderFrangos.TwinkleTray_2025.11225.11438...
+Twinkle Tray.exe                     C:\Program Files\WindowsApps\38002AlexanderFrangos.TwinkleTray_2025.11225.11438...
+Twinkle Tray.exe                     C:\Program Files\WindowsApps\38002AlexanderFrangos.TwinkleTray_2025.11225.11438...
+Twinkle Tray.exe                     C:\Program Files\WindowsApps\38002AlexanderFrangos.TwinkleTray_2025.11225.11438...
+UserOOBEBroker.exe                   C:\Windows\System32\oobe\UserOOBEBroker.exe                                       
+utweb.exe                            C:\Users\pc gamer\AppData\Roaming\uTorrent Web\utweb.exe                          
+vgtray.exe                           C:\Program Files\Riot Vanguard\vgtray.exe                                         
+vmcompute.exe                                                                                                          
+vmms.exe                                                                                                               
+wallpaper32.exe                      F:\Program Files (x86)\Steam\steamapps\common\wallpaper_engine\wallpaper32.exe    
+wininit.exe                                                                                                            
+winlogon.exe                                                                                                           
+WirelessKB850NotificationService.exe                                                                                   
+WmiPrvSE.exe                                                                                                           
+WmiPrvSE.exe                                                                                                           
+WMIRegistrationService.exe                                                                                             
+wslservice.exe                                                                                                         
+
+
