@@ -81,6 +81,7 @@ const byte DP_SPLASH    = 0x0C;
 const byte DP_CRASHEDGE = 0x0D;
 const byte DP_RIDEBOW   = 0x0E;
 const byte DP_RIDEEDGE  = 0x0F;
+const byte DP_HHEDGE    = 0xFF; // Dummy para evitar erro no Arduino Mega
 
 #else
 
@@ -113,6 +114,8 @@ const byte DP_CRASH2EDGE= 0x10;
 const byte DP_CHINA     = 0x11;
 const byte DP_SPLASH    = 0x12;
 #endif
+
+int currentHHPosition = 0; // Armazena a posição analógica/CC contínua do pedal
 
 //===========================
 //   PIN 
@@ -531,21 +534,30 @@ class pin
   
     //====================================================================
     if (State==Piezo_Time)
-    {          
-      //Piezo
-      if(Type==Piezo)
+    {             //Piezo ou HH
+      if(Type==Piezo || Type==HH)
       {
         byte v=useCurve();
+        byte noteToSend = Note;
+        
+        // Padrão General MIDI automático para o Chimbal (compatível com Melodics, AD2 e SD3)
+        if (Type == HH || Note == 8 || Note == 42 || Note == 46) {
+          if (currentHHPosition > 50) {
+            noteToSend = 42; // Chimbal Fechado (Closed Hi-Hat)
+          } else {
+            noteToSend = 46; // Chimbal Aberto (Open Hi-Hat)
+          }
+        }
           
         #if USE_WAVTRIGGER
         wavTrigger(i,v);
         #endif
         
         #if USE_PISERIAL
-        piNote(Note,v);
+        piNote(noteToSend,v);
         #endif
          
-        fastNoteOn(Channel,Note,v);
+        fastNoteOn(Channel,noteToSend,v);
 
         
         State=Mask_Time;
@@ -564,37 +576,7 @@ class pin
               
               dual->State=Mask_Time;
          }
-         /*
-         else if(TypeSensor[DualSensor(i)]==PIEZO && MaxReadingSensor[DualSensor(i)]> ThresoldSensor[DualSensor(i)]) //Piezo-Piezo
-        {
-            byte v=UseCurve(CurveSensor[DualSensor(i)],MaxReadingSensor[DualSensor(i)],CurveFormSensor[DualSensor(i)]);
-            #if WAVTRIGGER
-             wavTrigger(DualSensor(i),v);
-            #endif
-            fastNoteOn(ChannelSensor[DualSensor(i)],NoteSensor[DualSensor(i)],v);
-            
-            MaxReadingSensor[DualSensor(i)]=-1;  //Dual XTalk
-          
-        }*/
       }
-      else //HH========================================
-      {
-      	//??? dual != hhc
-        byte note=Note;
-        //if(ZeroCountSensor[HHC]>DualThresoldSensor[i])//DUAL
-        if(dual->MaxReading>dual->Thresold)
-          note=ChokeNote;
-        else if(dual->MaxReading>HHThresoldSensor[3])
-          note=HHNoteSensor[3];
-        else if(dual->MaxReading>HHThresoldSensor[2])
-          note=HHNoteSensor[2];
-        else if(dual->MaxReading>HHThresoldSensor[1])
-          note=HHNoteSensor[1];
-        else if(dual->MaxReading>HHThresoldSensor[0])
-          note=HHNoteSensor[0];
-
-        fastNoteOn(Channel,note,useCurve());
-      }//HH=======================
     }
   }
   //=======================
@@ -666,6 +648,7 @@ class pin
   //===============================
   void scanHHC(byte pin,byte sensorReading)
   {
+    currentHHPosition = sensorReading; // Atualiza a leitura contínua do pedal em tempo real
     static unsigned long lastFootCloseTime = 0;
     if ((GlobalTime-Time) > MaskTime)
     {
