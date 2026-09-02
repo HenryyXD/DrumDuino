@@ -1,0 +1,22 @@
+# Build / IDE
+app/bin/
+app/obj/
+app/node_modules/
+app/dist/
+*.user
+*.suo
+.vs/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Secrets
+.env
+.env.*
+
+# Local legacy tools (not part of this repo)
+*.exe
+*.dll
+*.pyd
