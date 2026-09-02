@@ -1,0 +1,14 @@
+---
+description: DrumDuino firmware (Arduino Mega microdrum.ino)
+globs: firmware/**
+alwaysApply: false
+---
+
+# Firmware rules
+
+- Source of truth for serial protocol: `d_setting.ino`, `a_midi.ino`
+- Target: **Mega 16 pads** (`MEGA=1`, `NPin=16`, `SERIALSPEED=1` → 115200 baud)
+- SysEx manufacturer ID: `0x77`, packet `F0 77 cmd d1 d2 d3 F7`
+- Do not break compatibility with `DrumDuino.Core` without updating `docs/protocol.md`
+- Prefer minimal diffs; this is adapted MicroDrum v1.4.0, not TeensyDrum
+- Optional future: auto MIDI on disconnect, mode LED

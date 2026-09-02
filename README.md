@@ -2,12 +2,13 @@
 
 Electronic drum module for Arduino Mega (16 analog inputs) with a modern PC configuration app.
 
+**Repo local:** `Z:\Workdir\DrumDuino`
 ## Structure
 
 ```
 DrumDuino/
 ├── firmware/     Arduino sketch (MicroDrum/MegaDrum adaptation)
-├── app/          PC config tool (in development)
+├── app/          PC config tool (Avalonia + .NET 8)
 ├── presets/      Drum kit presets
 └── docs/         Protocol and hardware notes
 ```
@@ -27,10 +28,9 @@ DrumDuino/
 
 ## Configuration
 
-1. Open DrumDuino app → connect COM port.
-2. Edit pads (threshold, note, scan time, etc.).
-3. Save to EEPROM on the board.
-4. Return to MIDI mode and disconnect.
+1. Build/run the app: `cd Z:\Workdir\DrumDuino\app && dotnet run --project DrumDuino.App`
+2. Connect COM port → edit pads → **Salvar EEPROM**
+3. **Voltar MIDI** and close — play via USB MIDI
 
 ## Firmware origin
 

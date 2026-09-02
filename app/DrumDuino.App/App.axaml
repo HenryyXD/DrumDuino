@@ -1,0 +1,21 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DrumDuino.App.App"
+             xmlns:local="using:DrumDuino.App"
+             xmlns:conv="using:DrumDuino.App.Converters"
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <conv:ByteToDoubleConverter x:Key="ByteToDouble" />
+    </Application.Resources>
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://DrumDuino.App/Styles/AppTheme.axaml" />
+    </Application.Styles>
+</Application>

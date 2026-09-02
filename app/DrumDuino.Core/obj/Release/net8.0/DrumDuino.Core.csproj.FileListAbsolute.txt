@@ -1,0 +1,13 @@
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\bin\Release\net8.0\DrumDuino.Core.deps.json
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\bin\Release\net8.0\DrumDuino.Core.dll
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\bin\Release\net8.0\DrumDuino.Core.pdb
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.csproj.AssemblyReference.cache
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.GeneratedMSBuildEditorConfig.editorconfig
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.AssemblyInfoInputs.cache
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.AssemblyInfo.cs
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.csproj.CoreCompileInputs.cache
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.sourcelink.json
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.dll
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\refint\DrumDuino.Core.dll
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\DrumDuino.Core.pdb
+Z:\Workdir\DrumDuino\app\DrumDuino.Core\obj\Release\net8.0\ref\DrumDuino.Core.dll
