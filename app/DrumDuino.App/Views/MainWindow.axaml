@@ -12,329 +12,409 @@
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="DrumDuino"
-        Width="920"
-        Height="640"
-        MinWidth="760"
-        MinHeight="520">
+        Width="1180"
+        Height="720"
+        MinWidth="900"
+        MinHeight="600">
 
     <Design.DataContext>
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <Grid ColumnDefinitions="52,*">
-        <!-- Nav lateral -->
-        <Border Grid.Column="0"
-                Background="{DynamicResource SurfaceBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="0,0,1,0"
-                Padding="4,8">
-            <StackPanel Spacing="6">
-                <Button Content="⚙"
-                        Classes="nav"
-                        Classes.nav-active="{Binding IsConfigPage}"
-                        ToolTip.Tip="Configuração"
-                        Command="{Binding ShowConfigurationCommand}" />
-                <Button Content="▮"
-                        Classes="nav"
-                        Classes.nav-active="{Binding IsMonitorPage}"
-                        ToolTip.Tip="Monitor de pads"
-                        Command="{Binding ShowMonitorCommand}" />
-            </StackPanel>
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Margin="8,6">
+
+        <!-- StatusBar -->
+        <Border Grid.Row="0" Classes="section-card" Padding="8,6" Margin="0,0,0,6">
+            <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+                <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                    <Ellipse Width="8" Height="8" Fill="{Binding ModeDotBrush}" />
+                    <TextBlock Text="{Binding ModeLabel}" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+                    <Ellipse Width="6" Height="6" Fill="{Binding ConnectionDotBrush}" Margin="8,0,0,0" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" Margin="12,0,0,0">
+                    <TextBlock Text="COM" VerticalAlignment="Center" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" />
+                    <ComboBox MinWidth="88" ItemsSource="{Binding SerialPorts}" SelectedItem="{Binding SelectedPort}" IsEnabled="{Binding !IsConnected}" FontSize="11" />
+                    <Button Content="↻" Classes="ghost" Command="{Binding RefreshPortsCommand}" Padding="6,4" />
+                    <Button Content="{Binding ConnectionButtonText}" Classes="accent" Command="{Binding ToggleConnectionCommand}" FontSize="11" Padding="10,5" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" Margin="12,0,0,0">
+                    <TextBlock Text="MIDI IN" VerticalAlignment="Center" Foreground="{DynamicResource TextMutedBrush}" FontSize="11" />
+                    <ComboBox MinWidth="120" ItemsSource="{Binding MidiInputDevices}" SelectedItem="{Binding SelectedMidiInput}" FontSize="11">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" FontSize="11" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="0">
+                    <TextBlock Text="{Binding KitName}" FontWeight="SemiBold" FontSize="13" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding DiffSummary}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" />
+                </StackPanel>
+
+                <Border Grid.Column="4" Background="{DynamicResource SurfaceRaisedBrush}" CornerRadius="4" Padding="6,2" Margin="4,0"
+                        IsVisible="{Binding HasRamDiff}">
+                    <TextBlock Text="RAM≠" FontSize="10" Foreground="{DynamicResource AccentBrush}" />
+                </Border>
+                <Border Grid.Column="5" Background="{DynamicResource SurfaceRaisedBrush}" CornerRadius="4" Padding="6,2" Margin="4,0"
+                        IsVisible="{Binding HasEepromDiff}">
+                    <TextBlock Text="EEPROM≠" FontSize="10" Foreground="{DynamicResource AccentBrush}" />
+                </Border>
+
+                <StackPanel Grid.Column="6" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center" Margin="8,0">
+                    <Button Content="{Binding UndoLabel}" Classes="ghost" Command="{Binding UndoCommand}" IsEnabled="{Binding CanUndo}" FontSize="10" Padding="6,3" />
+                    <Button Content="Refazer" Classes="ghost" Command="{Binding RedoCommand}" IsEnabled="{Binding CanRedo}" FontSize="10" Padding="6,3" />
+                </StackPanel>
+
+                <ToggleSwitch Grid.Column="7" Content="Monitor" IsChecked="{Binding IsMonitorEnabled}" FontSize="10" />
+            </Grid>
         </Border>
 
-        <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto" Margin="8,6,8,6">
-            <!-- Toolbar -->
-            <Border Grid.Row="0"
-                    Classes="section-card"
-                    Padding="10,8"
-                    Margin="0,0,0,8">
-                <Grid ColumnDefinitions="Auto,*,Auto">
-                    <StackPanel Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="COM"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextMutedBrush}"
-                                   FontSize="{DynamicResource FontSizeSmall}" />
-                        <ComboBox MinWidth="100"
-                                  ItemsSource="{Binding SerialPorts}"
-                                  SelectedItem="{Binding SelectedPort}"
-                                  IsEnabled="{Binding !IsConnected}" />
-                        <Button Content="↻"
-                                Classes="ghost"
-                                ToolTip.Tip="Atualizar portas COM"
-                                Command="{Binding RefreshPortsCommand}" />
-                        <Button Content="{Binding ConnectionButtonText}"
-                                Classes="accent"
-                                Command="{Binding ToggleConnectionCommand}" />
-                    </StackPanel>
+        <!-- Tabs -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="6" Margin="0,0,0,6">
+            <Button Content="Configuração" Classes="tab"
+                    Classes.tab-active="{Binding IsConfigPage}"
+                    Command="{Binding ShowConfigurationCommand}" />
+            <Button Content="Analytics" Classes="tab"
+                    Classes.tab-active="{Binding IsAnalyticsPage}"
+                    Command="{Binding ShowAnalyticsCommand}" />
+            <TextBlock Text="{Binding CrosstalkMessage}" VerticalAlignment="Center" Margin="12,0,0,0"
+                       FontSize="10" Foreground="{DynamicResource AccentBrush}" />
+        </StackPanel>
 
-                    <StackPanel Grid.Column="1"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Spacing="1">
-                        <TextBlock Text="DrumDuino"
-                                   FontWeight="Bold"
-                                   FontSize="{DynamicResource FontSizeHeading}"
-                                   Foreground="{DynamicResource TextPrimaryBrush}"
-                                   HorizontalAlignment="Center" />
-                        <TextBlock Text="{Binding KitName}"
-                                   FontSize="{DynamicResource FontSizeSmall}"
-                                   Foreground="{DynamicResource TextSecondaryBrush}"
-                                   HorizontalAlignment="Center" />
-                    </StackPanel>
+        <!-- Content -->
+        <Grid Grid.Row="2">
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                        <TextBlock Text="MIDI IN"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextMutedBrush}"
-                                   FontSize="{DynamicResource FontSizeSmall}" />
-                        <ComboBox MinWidth="130"
-                                  ItemsSource="{Binding MidiInputDevices}"
-                                  SelectedItem="{Binding SelectedMidiInput}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
+            <!-- CONFIG -->
+            <Grid IsVisible="{Binding IsConfigPage}" ColumnDefinitions="248,*,200">
+                <!-- Pad list -->
+                <Border Grid.Column="0" Classes="section-card" Padding="8,6" Margin="0,0,6,0">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Spacing="4" Margin="0,0,0,6">
+                            <TextBlock Text="Pads" FontWeight="SemiBold" FontSize="12" />
+                            <TextBox Text="{Binding PadSearchText}" Watermark="Buscar pad…" FontSize="11" MinHeight="26" />
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <Button Content="Todos" Classes="ghost" FontSize="10" Padding="4,2" Command="{Binding ToggleBatchSelectAllCommand}" />
+                                <Button Content="▲" Classes="ghost" FontSize="10" Padding="4,2" Command="{Binding MovePadUpCommand}" ToolTip.Tip="Subir ordem" />
+                                <Button Content="▼" Classes="ghost" FontSize="10" Padding="4,2" Command="{Binding MovePadDownCommand}" ToolTip.Tip="Descer ordem" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <ListBox ItemsSource="{Binding Pads}"
+                                 SelectedItem="{Binding SelectedPad}"
+                                 Classes="pad-list"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate x:DataType="vm:PadViewModel">
+                                    <Border Classes="pad-card" Padding="6,4" CornerRadius="6"
+                                            IsVisible="{Binding IsVisibleInList}"
+                                            Background="{DynamicResource SurfaceRaisedBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                        <Grid ColumnDefinitions="Auto,*,Auto,48">
+                                            <CheckBox IsChecked="{Binding IsBatchSelected}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                                            <StackPanel Grid.Column="1" Spacing="1">
+                                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="11" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{Binding NoteLabel}" FontSize="9" Foreground="{DynamicResource TextMutedBrush}" />
+                                            </StackPanel>
+                                            <Border Grid.Column="2" Background="{DynamicResource SurfaceBrush}" CornerRadius="2" Padding="3,1"
+                                                    IsVisible="{Binding HasDiff}" VerticalAlignment="Center" Margin="0,0,4,0">
+                                                <TextBlock Text="≠" FontSize="9" Foreground="{DynamicResource AccentBrush}" />
+                                            </Border>
+                                            <ProgressBar Grid.Column="3" Minimum="0" Maximum="127" Value="{Binding HitLevel}" Height="6" VerticalAlignment="Center" />
+                                        </Grid>
+                                    </Border>
                                 </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <Button Content="↻"
-                                Classes="ghost"
-                                ToolTip.Tip="Atualizar entradas MIDI"
-                                Command="{Binding RefreshMidiInputsCommand}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
 
-            <!-- Conteúdo -->
-            <Grid Grid.Row="1" VerticalAlignment="Stretch">
-                <!-- Configuração -->
-                <Grid IsVisible="{Binding IsConfigPage}"
-                      ColumnDefinitions="*,228"
-                      VerticalAlignment="Stretch">
-                    <DataGrid ItemsSource="{Binding Pads}"
-                              SelectedItem="{Binding SelectedPad}"
-                              AutoGenerateColumns="False"
-                              IsReadOnly="True"
-                              SelectionMode="Single"
-                              VerticalAlignment="Stretch"
-                              HorizontalAlignment="Stretch">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="#" Binding="{Binding Index}" Width="32" />
-                            <DataGridTextColumn Header="Nome" Binding="{Binding Name}" Width="*" MinWidth="72" />
-                            <DataGridTextColumn Header="Tipo" Binding="{Binding Type}" Width="58" />
-                            <DataGridTextColumn Header="Nota" Binding="{Binding NoteLabel}" Width="76" />
-                            <DataGridTextColumn Header="Thr" Binding="{Binding Threshold}" Width="36" />
-                            <DataGridTextColumn Header="Scn" Binding="{Binding ScanTime}" Width="36" />
-                            <DataGridTextColumn Header="Msk" Binding="{Binding MaskTime}" Width="36" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-
-                    <Border Grid.Column="1"
-                            Classes="section-card"
-                            Margin="6,0,0,0"
-                            Padding="8,6"
-                            VerticalAlignment="Stretch">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                      HorizontalScrollBarVisibility="Disabled">
-                            <StackPanel Spacing="4" IsEnabled="{Binding HasSelectedPad}">
-                                <TextBlock Text="{Binding SelectedPad.Name, TargetNullValue=Selecione um pad}"
-                                           FontWeight="SemiBold"
-                                           FontSize="{DynamicResource FontSizeSmall}"
-                                           Foreground="{DynamicResource TextPrimaryBrush}"
-                                           TextTrimming="CharacterEllipsis" />
-
-                                <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto,Auto,Auto">
-                                    <TextBlock Grid.Row="0" Text="Nome" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedPad.Name}" MinHeight="26" FontSize="12" Margin="0,0,0,2" />
-
-                                    <TextBlock Grid.Row="1" Text="Tipo" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding PadTypes}" SelectedItem="{Binding SelectedPad.Type}" MinHeight="26" FontSize="12" Margin="0,0,0,2" />
-
-                                    <TextBlock Grid.Row="2" Text="Nota" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,28" Margin="0,0,0,2">
-                                        <Slider Minimum="0"
-                                                Maximum="127"
-                                                Value="{Binding SelectedPad.Note, Converter={StaticResource ByteToDouble}, Mode=TwoWay}"
-                                                VerticalAlignment="Center"
-                                                Classes="param-slider" />
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding SelectedPad.Note}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Right"
-                                                   FontSize="12"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource AccentBrush}" />
-                                    </Grid>
-
-                                    <TextBlock Grid.Row="3" Text="Curva" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
-                                    <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding VelocityCurves}" SelectedItem="{Binding SelectedPad.Curve}" MinHeight="26" FontSize="12" />
+                <!-- Editor + monitor dock -->
+                <Grid Grid.Column="1" RowDefinitions="*,Auto" Margin="0,0,6,0">
+                    <Border Grid.Row="0" Classes="section-card" Padding="8,6">
+                        <DockPanel IsEnabled="{Binding HasSelectedPad}">
+                            <StackPanel DockPanel.Dock="Top" Spacing="6" Margin="0,0,0,6">
+                                <Grid ColumnDefinitions="*,Auto,Auto">
+                                    <StackPanel Spacing="2">
+                                        <TextBlock Text="{Binding SelectedPad.Name, TargetNullValue=Selecione um pad}" FontWeight="SemiBold" FontSize="13" />
+                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextMutedBrush}">
+                                            <Run Text="Pad " /><Run Text="{Binding SelectedPad.Index}" /><Run Text=" · " /><Run Text="{Binding SelectedPad.Summary}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Test note" Classes="ghost" FontSize="10" Margin="0,0,4,0"
+                                            Command="{Binding SendTestNoteCommand}" ToolTip.Tip="Envia nota de teste via MIDI OUT" />
+                                    <Button Grid.Column="2" Content="Wizard Thr" Classes="ghost" FontSize="10"
+                                            Command="{Binding StartThresholdWizardCommand}" />
                                 </Grid>
 
-                                <Separator Margin="0,2" />
+                                <Border IsVisible="{Binding IsWizardActive}" Background="{DynamicResource SurfaceRaisedBrush}" Padding="8" CornerRadius="6">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="{Binding WizardStatus}" FontSize="11" />
+                                        <TextBlock FontSize="10" Foreground="{DynamicResource TextMutedBrush}">
+                                            <Run Text="Sugestão threshold: " /><Run Text="{Binding WizardSuggestedThreshold}" />
+                                            <Run Text=" mask: " /><Run Text="{Binding WizardSuggestedMask}" />
+                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <Button Content="Aplicar sugestão" Classes="accent" FontSize="10" Command="{Binding ApplyWizardSuggestionCommand}" />
+                                            <Button Content="Cancelar" Classes="ghost" FontSize="10" Command="{Binding CancelThresholdWizardCommand}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
 
-                                <ctrl:ParameterRow Label="Threshold" Hint="Sensibilidade mínima">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.Threshold" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Scan time" Hint="Janela de amostragem">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.ScanTime" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Mask time" Hint="Tempo morto">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.MaskTime" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Retrigger" Hint="Supressão de retoques">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.Retrigger" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Curve form" Hint="Formato da curva">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.CurveForm" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Gain" Hint="Nível máximo">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.Gain" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="XTalk" Hint="Crosstalk">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.XTalk" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="XTalk grp" Hint="Grupo crosstalk">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.XTalkGroup" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
-                                <ctrl:ParameterRow Label="Canal" Maximum="15" Hint="Canal MIDI 0-15">
-                                    <ctrl:ParameterRow.Value>
-                                        <Binding Path="SelectedPad.Channel" Converter="{StaticResource ByteToDouble}" ConverterParameter="0,15" Mode="TwoWay" />
-                                    </ctrl:ParameterRow.Value>
-                                </ctrl:ParameterRow>
+                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                    <Button Content="Identidade" Classes="tab-sm" FontSize="10"
+                                            Command="{Binding SetEditorSectionCommand}" CommandParameter="Identity" />
+                                    <Button Content="Sensibilidade" Classes="tab-sm" FontSize="10"
+                                            Command="{Binding SetEditorSectionCommand}" CommandParameter="Sensitivity" />
+                                    <Button Content="Curva" Classes="tab-sm" FontSize="10"
+                                            Command="{Binding SetEditorSectionCommand}" CommandParameter="Curve" />
+                                    <Button Content="Crosstalk" Classes="tab-sm" FontSize="10"
+                                            Command="{Binding SetEditorSectionCommand}" CommandParameter="Crosstalk" />
+                                </StackPanel>
                             </StackPanel>
-                        </ScrollViewer>
+
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Spacing="6">
+                                    <!-- Identity -->
+                                    <StackPanel IsVisible="{Binding CurrentEditorSection, Converter={StaticResource EditorSectionToBool}, ConverterParameter=Identity}" Spacing="4">
+                                        <Grid ColumnDefinitions="64,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                                            <TextBlock Grid.Row="0" Text="Nome" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SelectedPad.Name}" MinHeight="26" FontSize="11" />
+                                            <TextBlock Grid.Row="1" Text="Tipo" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding PadTypes}" SelectedItem="{Binding SelectedPad.Type}" MinHeight="26" FontSize="11" />
+                                            <TextBlock Grid.Row="2" Text="Nota" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,28">
+                                                <Slider Minimum="0" Maximum="127" Value="{Binding SelectedPad.Note, Converter={StaticResource ByteToDouble}, Mode=TwoWay}" Classes="param-slider" />
+                                                <TextBlock Grid.Column="1" Text="{Binding SelectedPad.Note}" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="11" />
+                                            </Grid>
+                                            <TextBlock Grid.Row="3" Text="Canal" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="*,28">
+                                                <Slider Minimum="0" Maximum="15" Value="{Binding SelectedPad.Channel, Converter={StaticResource ByteToDouble}, Mode=TwoWay}" Classes="param-slider" />
+                                                <TextBlock Grid.Column="1" Text="{Binding SelectedPad.Channel}" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="11" />
+                                            </Grid>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <!-- Sensitivity -->
+                                    <StackPanel IsVisible="{Binding CurrentEditorSection, Converter={StaticResource EditorSectionToBool}, ConverterParameter=Sensitivity}" Spacing="2">
+                                        <ctrl:ParameterRow Label="Threshold" Hint="Sensibilidade mínima — golpes abaixo são ignorados">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.Threshold" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:ParameterRow Label="Scan time" Hint="Janela de amostragem do pico">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.ScanTime" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:ParameterRow Label="Mask time" Hint="Tempo morto após golpe">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.MaskTime" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:ParameterRow Label="Retrigger" Hint="Supressão de retoques">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.Retrigger" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:ParameterRow Label="Gain" Hint="Nível máximo de saída">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.Gain" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                    </StackPanel>
+
+                                    <!-- Curve -->
+                                    <StackPanel IsVisible="{Binding CurrentEditorSection, Converter={StaticResource EditorSectionToBool}, ConverterParameter=Curve}" Spacing="6">
+                                        <TextBlock Text="Preset de curva" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                        <ComboBox ItemsSource="{Binding VelocityCurves}" SelectedItem="{Binding SelectedPad.Curve}" FontSize="11" MinHeight="28" />
+                                        <ctrl:ParameterRow Label="Curve form" Hint="Formato fino da curva (0–127)">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.CurveForm" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:CurvePreviewControl Height="80"
+                                                                  Curve="{Binding SelectedPad.Curve}"
+                                                                  CurveForm="{Binding SelectedPad.CurveForm}" />
+                                        <Border Background="{DynamicResource SurfaceRaisedBrush}" CornerRadius="6" Padding="8" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Opacity="0.6">
+                                            <TextBlock Text="Editor gráfico de curva custom — P2 (pendente)" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" TextWrapping="Wrap" />
+                                        </Border>
+                                    </StackPanel>
+
+                                    <!-- Crosstalk -->
+                                    <StackPanel IsVisible="{Binding CurrentEditorSection, Converter={StaticResource EditorSectionToBool}, ConverterParameter=Crosstalk}" Spacing="2">
+                                        <ctrl:ParameterRow Label="XTalk" Hint="Supressão de crosstalk">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.XTalk" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                        <ctrl:ParameterRow Label="XTalk grp" Hint="Grupo de pads com crosstalk compartilhado">
+                                            <ctrl:ParameterRow.Value>
+                                                <Binding Path="SelectedPad.XTalkGroup" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                            </ctrl:ParameterRow.Value>
+                                        </ctrl:ParameterRow>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Monitor dock -->
+                    <Border Grid.Row="1" Classes="section-card" Padding="8,6" Margin="0,6,0,0" MaxHeight="120">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="Monitor ao vivo" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,4" />
+                            <ItemsControl ItemsSource="{Binding Pads}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="8" Rows="2" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="vm:PadViewModel">
+                                        <Border Margin="2" Padding="4,2" CornerRadius="4" Background="{DynamicResource SurfaceRaisedBrush}"
+                                                Opacity="{Binding IsMonitorMuted, Converter={StaticResource MuteToOpacity}}">
+                                            <StackPanel Spacing="2">
+                                                <TextBlock Text="{Binding Name}" FontSize="9" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                                <ProgressBar Minimum="0" Maximum="127" Value="{Binding HitLevel}" Height="5" />
+                                                <TextBlock Text="{Binding LastHitLabel}" FontSize="9" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Right" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
                     </Border>
                 </Grid>
 
-                <!-- Monitor -->
-                <Border IsVisible="{Binding IsMonitorPage}" Classes="section-card" Padding="12">
-                    <DockPanel>
-                        <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
-                            <StackPanel Spacing="2">
-                                <TextBlock Text="Monitor de pads"
-                                           FontWeight="SemiBold"
-                                           FontSize="{DynamicResource FontSizeHeading}"
-                                           Foreground="{DynamicResource TextPrimaryBrush}" />
-                                <TextBlock Text="{Binding MonitorSourceHint}"
-                                           FontSize="{DynamicResource FontSizeSmall}"
-                                           Foreground="{DynamicResource TextMutedBrush}" />
-                            </StackPanel>
-                            <ToggleSwitch Grid.Column="1"
-                                          Content="Ativo"
-                                          IsChecked="{Binding IsMonitorEnabled}"
-                                          VerticalAlignment="Center" />
-                        </Grid>
+                <!-- Right rail -->
+                <Border Grid.Column="2" Classes="section-card" Padding="8,6">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="MÓDULO" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" FontWeight="SemiBold" />
+                            <Button Content="Ler" Command="{Binding ReadFromDeviceCommand}" IsEnabled="{Binding IsConnected}" FontSize="11" />
+                            <Button Content="Aplicar RAM" Command="{Binding ApplyToDeviceCommand}" IsEnabled="{Binding IsConnected}" FontSize="11" />
+                            <Button Content="Reset → EEPROM" Command="{Binding ResetToEepromCommand}" IsEnabled="{Binding IsConnected}" Classes="ghost" FontSize="11" />
+                            <Button Content="Salvar EEPROM" Command="{Binding SaveEepromCommand}" IsEnabled="{Binding IsConnected}" Classes="accent" FontSize="11" />
+                            <Button Content="Voltar MIDI" Command="{Binding ReturnToMidiCommand}" IsEnabled="{Binding IsConnected}" Classes="ghost" FontSize="11" />
 
-                        <ItemsControl ItemsSource="{Binding Pads}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="4" Rows="4" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate x:DataType="vm:PadViewModel">
-                                    <Border Margin="4"
-                                            Padding="8,6"
-                                            CornerRadius="8"
-                                            Background="{DynamicResource SurfaceRaisedBrush}"
-                                            BorderBrush="{DynamicResource BorderBrush}"
-                                            BorderThickness="1">
-                                        <StackPanel Spacing="4">
-                                            <Grid ColumnDefinitions="Auto,*">
-                                                <TextBlock Text="{Binding Index, StringFormat={}{0}}"
-                                                           FontWeight="Bold"
-                                                           Foreground="{DynamicResource TextMutedBrush}"
-                                                           Margin="0,0,6,0" />
-                                                <TextBlock Grid.Column="1"
-                                                           Text="{Binding Name}"
-                                                           FontWeight="SemiBold"
-                                                           TextTrimming="CharacterEllipsis"
-                                                           Foreground="{DynamicResource TextPrimaryBrush}" />
-                                            </Grid>
-                                            <ProgressBar Minimum="0"
-                                                         Maximum="127"
-                                                         Value="{Binding HitLevel}"
-                                                         Height="8"
-                                                         Foreground="{DynamicResource AccentBrush}" />
-                                            <Grid ColumnDefinitions="*,Auto">
-                                                <TextBlock Text="{Binding NoteLabel}"
-                                                           FontSize="{DynamicResource FontSizeSmall}"
-                                                           Foreground="{DynamicResource TextMutedBrush}" />
-                                                <TextBlock Grid.Column="1"
-                                                           Text="{Binding LastHitLabel}"
-                                                           FontWeight="Bold"
-                                                           Foreground="{DynamicResource AccentBrush}" />
-                                            </Grid>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </DockPanel>
+                            <Separator Margin="0,4" />
+                            <TextBlock Text="ARQUIVO" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" FontWeight="SemiBold" />
+                            <Button x:Name="ImportIniButton" Content="Importar .ini" Classes="ghost" FontSize="11" />
+                            <Button x:Name="LoadJsonButton" Content="Abrir JSON" Classes="ghost" FontSize="11" />
+                            <Button x:Name="SaveJsonButton" Content="Salvar JSON" Classes="ghost" FontSize="11" />
+
+                            <Separator Margin="0,4" />
+                            <TextBlock Text="LOTE / DUPLICAR" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" FontWeight="SemiBold" />
+                            <ctrl:ParameterRow Label="Thr lote" Maximum="127">
+                                <ctrl:ParameterRow.Value>
+                                    <Binding Path="BatchThreshold" Converter="{StaticResource ByteToDouble}" Mode="TwoWay" />
+                                </ctrl:ParameterRow.Value>
+                            </ctrl:ParameterRow>
+                            <ComboBox ItemsSource="{Binding VelocityCurves}" SelectedItem="{Binding BatchCurve}" FontSize="11" MinHeight="26" />
+                            <Button Content="Aplicar em lote" Command="{Binding ApplyBatchSettingsCommand}" FontSize="11" />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <NumericUpDown Grid.Column="0" Value="{Binding DuplicateTargetIndex}" Minimum="0" Maximum="15" FontSize="11" MinHeight="26" />
+                                <Button Grid.Column="1" Content="Duplicar" Command="{Binding DuplicatePadCommand}" Classes="ghost" FontSize="10" Margin="4,0,0,0" />
+                            </Grid>
+
+                            <Separator Margin="0,4" />
+                            <TextBlock Text="PROFILES" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" FontWeight="SemiBold" />
+                            <ComboBox ItemsSource="{Binding PadProfiles}" SelectedItem="{Binding SelectedProfile}" FontSize="11" MinHeight="26">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="11" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBox Text="{Binding NewProfileName}" Watermark="Nome do profile…" FontSize="11" MinHeight="26" />
+                            <Button Content="Salvar profile" Command="{Binding SavePadProfileCommand}" FontSize="11" Classes="ghost" />
+                            <Button Content="Carregar profile" Command="{Binding LoadPadProfileCommand}" FontSize="11" />
+                            <Button Content="↻ Profiles" Command="{Binding RefreshProfilesCommand}" Classes="ghost" FontSize="10" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </Border>
             </Grid>
 
-            <!-- Rodapé -->
-            <Border Grid.Row="2"
-                    Margin="0,8,0,0"
-                    Classes="section-card"
-                    Padding="8,6">
-                <Grid ColumnDefinitions="*,Auto,Auto">
-                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                        <Ellipse Width="8" Height="8" Fill="{Binding ConnectionDotBrush}" />
-                        <TextBlock Text="{Binding StatusMessage}"
-                                   TextWrapping="Wrap"
-                                   FontSize="{DynamicResource FontSizeSmall}"
-                                   Foreground="{DynamicResource TextSecondaryBrush}" />
+            <!-- ANALYTICS -->
+            <Grid IsVisible="{Binding IsAnalyticsPage}" RowDefinitions="Auto,*,*,Auto">
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,6">
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Monitor + Analytics" FontWeight="SemiBold" FontSize="14" />
+                        <TextBlock Text="{Binding MonitorSourceHint}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" />
                     </StackPanel>
-
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                Spacing="4"
-                                Margin="8,0"
-                                IsEnabled="{Binding IsConnected}">
-                        <Button Content="Ler" Classes="ghost" Command="{Binding ReadFromDeviceCommand}" />
-                        <Button Content="Aplicar" Command="{Binding ApplyToDeviceCommand}" />
-                        <Button Content="EEPROM" Classes="accent" Command="{Binding SaveEepromCommand}" />
-                        <Button Content="MIDI" Classes="ghost" Command="{Binding ReturnToMidiCommand}" />
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
-                        <Button x:Name="ImportIniButton" Content=".ini" Classes="ghost" />
-                        <Button x:Name="LoadJsonButton" Content="JSON" Classes="ghost" />
-                        <Button x:Name="SaveJsonButton" Content="Salvar" Classes="ghost" />
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                        <ToggleSwitch Content="Single pad" IsChecked="{Binding SinglePadMonitorMode}" FontSize="10" />
+                        <Button Content="Limpar" Classes="ghost" FontSize="10" Command="{Binding ClearAnalyticsCommand}" />
                     </StackPanel>
                 </Grid>
-            </Border>
+
+                <Border Grid.Row="1" Classes="section-card" Padding="8" Margin="0,0,0,6">
+                    <ItemsControl ItemsSource="{Binding Pads}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="8" Rows="2" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:PadViewModel">
+                                <Border Margin="3" Padding="8,6" CornerRadius="6"
+                                        Background="{DynamicResource SurfaceRaisedBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                        Opacity="{Binding IsMonitorMuted, Converter={StaticResource MuteToOpacity}}">
+                                    <StackPanel Spacing="4">
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="11" />
+                                        <ProgressBar Minimum="0" Maximum="127" Value="{Binding HitLevel}" Height="10" />
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <TextBlock Text="{Binding NoteLabel}" FontSize="9" Foreground="{DynamicResource TextMutedBrush}" />
+                                            <TextBlock Grid.Column="1" Text="{Binding LastHitLabel}" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" FontSize="11" />
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+                <Grid Grid.Row="2" ColumnDefinitions="*,*" Margin="0,0,0,6">
+                    <Border Classes="section-card" Padding="8" Margin="0,0,3,0">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="Timeline — golpes × tempo (8s)" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,4" />
+                            <ctrl:TimelineControl MinHeight="140" />
+                        </DockPanel>
+                    </Border>
+                    <Border Grid.Column="1" Classes="section-card" Padding="8" Margin="3,0,0,0">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="Heatmap — 16 pads × recência" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,4" />
+                            <ctrl:HeatmapControl MinHeight="140" />
+                        </DockPanel>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Row="3" Classes="section-card" Padding="8">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Text="Intensidade × tempo (velocity média/s)" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <ctrl:IntensityChartControl MinHeight="100" />
+                    </DockPanel>
+                </Border>
+            </Grid>
         </Grid>
 
-        <Border IsVisible="{Binding IsBusy}"
-                Grid.ColumnSpan="2"
-                Background="#B00B0D10"
-                ZIndex="100">
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Spacing="8">
+        <!-- Footer status -->
+        <Border Grid.Row="3" Classes="section-card" Padding="8,5" Margin="0,6,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="{Binding StatusMessage}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding HistoryLabel}" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+
+        <Border IsVisible="{Binding IsBusy}" Grid.RowSpan="4" Background="#B00B0D10" ZIndex="100">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
                 <ProgressBar IsIndeterminate="True" Width="180" Height="4" />
-                <TextBlock Text="Comunicando com o módulo…"
-                           FontSize="{DynamicResource FontSizeSmall}"
-                           Foreground="{DynamicResource TextSecondaryBrush}"
-                           HorizontalAlignment="Center" />
+                <TextBlock Text="Comunicando com o módulo…" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" />
             </StackPanel>
         </Border>
     </Grid>
