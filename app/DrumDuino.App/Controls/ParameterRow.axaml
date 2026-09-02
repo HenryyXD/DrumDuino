@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="DrumDuino.App.Controls.ParameterRow"
+             x:Name="Root">
+
+    <Grid ColumnDefinitions="76,*,28" Margin="0,0,0,2">
+        <TextBlock Text="{Binding #Root.Label}"
+                   FontSize="{DynamicResource FontSizeSmall}"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource TextSecondaryBrush}"
+                   TextTrimming="CharacterEllipsis"
+                   ToolTip.Tip="{Binding #Root.Hint}" />
+
+        <Slider Grid.Column="1"
+                Minimum="{Binding #Root.Minimum}"
+                Maximum="{Binding #Root.Maximum}"
+                Value="{Binding #Root.Value, Mode=TwoWay}"
+                VerticalAlignment="Center"
+                Margin="4,0"
+                Classes="param-slider" />
+
+        <TextBlock Grid.Column="2"
+                   Text="{Binding #Root.Value, StringFormat={}{0:0}}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Right"
+                   FontSize="{DynamicResource FontSizeSmall}"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource AccentBrush}" />
+    </Grid>
+</UserControl>

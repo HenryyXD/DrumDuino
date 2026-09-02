@@ -1,8 +1,8 @@
 # Build / IDE
-app/bin/
-app/obj/
+**/bin/
+**/obj/
 app/node_modules/
-app/dist/
+dist/
 *.user
 *.suo
 .vs/

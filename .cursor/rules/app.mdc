@@ -1,0 +1,15 @@
+---
+description: DrumDuino Avalonia config app
+globs: app/**
+alwaysApply: false
+---
+
+# App rules
+
+- Stack: **Avalonia 11 + .NET 8 + C#** — new UI from scratch
+- Business logic in `DrumDuino.Core`; UI in `DrumDuino.App`
+- Do not copy or port old ConfigTool (C#/Python/.exe) UI or code
+- Serial: 115200 COM, Tool mode on connect, MIDI mode on disconnect/exit
+- Presets: JSON primary; `pins.ini` import only (legacy data format)
+- Keep Mega 16 pad profile; no 48-pad UI unless firmware changes first
+- Match existing dark, simple layout patterns in `MainWindow.axaml`
