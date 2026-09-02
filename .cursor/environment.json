@@ -1,0 +1,4 @@
+{
+  "name": "DrumDuino",
+  "install": "bash .cursor/install.sh"
+}

@@ -32,6 +32,24 @@ DrumDuino/
 3. Save to EEPROM on the board.
 4. Return to MIDI mode and disconnect.
 
+## Development
+
+The firmware toolchain is set up with [`arduino-cli`](https://arduino.github.io/arduino-cli/).
+
+```bash
+# One-time setup: installs arduino-cli + the arduino:avr core
+bash .cursor/install.sh
+
+# Compile the firmware for the Arduino Mega 2560
+./firmware/build.sh
+```
+
+`firmware/build.sh` assembles the split `.ino` sketch into a valid Arduino
+sketch and compiles it (`arduino:avr:mega`). Override the target board with
+`FQBN=... ./firmware/build.sh`. Extra arguments are passed through to
+`arduino-cli compile` (e.g. `./firmware/build.sh --output-dir out` to keep the
+`.hex`).
+
 ## Firmware origin
 
 Firmware in `firmware/` is adapted from [MicroDrum](https://github.com/massimobernava/md-firmware) / MicroMegaDrum for Arduino Mega without multiplexer boards.
