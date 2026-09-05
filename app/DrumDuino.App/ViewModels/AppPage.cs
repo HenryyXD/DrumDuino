@@ -3,7 +3,8 @@ namespace DrumDuino.App.ViewModels;
 public enum AppPage
 {
     Configuration,
-    Analytics
+    Analytics,
+    Training
 }
 
 public enum EditorSection

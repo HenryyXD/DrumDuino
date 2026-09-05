@@ -178,9 +178,13 @@ public partial class PadViewModel : ObservableObject
         OnPropertyChanged(nameof(HitLevelPercent));
     }
 
-    public void DecayHit(int amount = 6)
+    /// <summary>
+    /// Peak-hold: keep bar at last hit so the user can read force.
+    /// Optional slow fade only after idle (call with hold=false to fade).
+    /// </summary>
+    public void DecayHit(int amount = 6, bool holdLastHit = true)
     {
-        if (HitLevel <= 0)
+        if (holdLastHit || HitLevel <= 0)
         {
             return;
         }

@@ -20,9 +20,11 @@ public partial class MainViewModel : ViewModelBase
     private readonly HitAnalyticsService _analytics = new();
     private readonly KitHistoryService _history = new();
     private readonly PadProfileService _profiles = new();
+    private readonly DynamicsTrainingService _dynamicsTrainer = new();
     private readonly DispatcherTimer _hitDecayTimer;
     private readonly DispatcherTimer _analyticsRefreshTimer;
     private readonly DispatcherTimer _historyDebounceTimer;
+    private readonly DispatcherTimer _trainingUiTimer;
     private bool _historyDirty;
 
     private DrumKit? _eepromBaseline;
@@ -38,6 +40,8 @@ public partial class MainViewModel : ViewModelBase
     public IReadOnlyList<PadType> PadTypes { get; } = Enum.GetValues<PadType>();
     public IReadOnlyList<VelocityCurve> VelocityCurves { get; } = Enum.GetValues<VelocityCurve>();
     public IReadOnlyList<EditorSection> EditorSections { get; } = Enum.GetValues<EditorSection>();
+    public IReadOnlyList<DynamicsPattern> DynamicsPatterns { get; } = Enum.GetValues<DynamicsPattern>();
+    public DynamicsTrainingService DynamicsTrainer => _dynamicsTrainer;
 
     [ObservableProperty]
     private string? _selectedPort;
@@ -117,12 +121,37 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private VelocityCurve _batchCurve = VelocityCurve.Exp;
 
+    [ObservableProperty]
+    private DynamicsPattern _selectedDynamicsPattern = DynamicsPattern.Crescendo;
+
+    [ObservableProperty]
+    private double _trainingDurationSec = 16;
+
+    [ObservableProperty]
+    private int _trainingTolerance = 18;
+
+    [ObservableProperty]
+    private bool _trainingFocusSelectedPad = true;
+
+    [ObservableProperty]
+    private bool _isTrainingRunning;
+
+    [ObservableProperty]
+    private string _trainingScoreLabel = "Score: —";
+
+    [ObservableProperty]
+    private string _trainingStatusLabel = "Escolha um padrão e inicie o treino.";
+
+    [ObservableProperty]
+    private string _trainingProgressLabel = "0.0 / 16.0 s";
+
     public bool HasEepromBaseline => _eepromBaseline is not null;
 
     public string ConnectionButtonText => IsConnected ? "Desconectar" : "Conectar";
     public bool HasSelectedPad => SelectedPad is not null;
     public bool IsConfigPage => CurrentPage == AppPage.Configuration;
     public bool IsAnalyticsPage => CurrentPage == AppPage.Analytics;
+    public bool IsTrainingPage => CurrentPage == AppPage.Training;
     public bool CanUndo => _history.UndoCount > 0;
     public bool CanRedo => _history.RedoCount > 0;
     public string UndoLabel => CanUndo ? $"Desfazer ({_history.UndoCount})" : "Desfazer";
@@ -178,12 +207,9 @@ public partial class MainViewModel : ViewModelBase
         _hitDecayTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(40) };
         _hitDecayTimer.Tick += (_, _) =>
         {
-            foreach (var pad in Pads)
-            {
-                pad.DecayHit();
-            }
+            // Peak-hold: bars stay at last hit (DecayHit no-ops with holdLastHit=true).
         };
-        _hitDecayTimer.Start();
+        // Timer kept for future optional fade; not decaying by default.
 
         _analyticsRefreshTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
         _analyticsRefreshTimer.Tick += (_, _) => RefreshAnalyticsDisplay();
@@ -199,6 +225,10 @@ public partial class MainViewModel : ViewModelBase
                 PushHistorySnapshot();
             }
         };
+
+        _trainingUiTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+        _trainingUiTimer.Tick += (_, _) => RefreshTrainingUi();
+        _dynamicsTrainer.Changed += () => Dispatcher.UIThread.Post(RefreshTrainingUi);
 
         LoadDefaultKit();
         RefreshPorts();
@@ -255,6 +285,86 @@ public partial class MainViewModel : ViewModelBase
     {
         CurrentPage = AppPage.Analytics;
         RefreshAnalyticsDisplay();
+    }
+
+    [RelayCommand]
+    private void ShowTraining()
+    {
+        CurrentPage = AppPage.Training;
+        if (!IsMonitorEnabled)
+        {
+            IsMonitorEnabled = true;
+            UpdateMonitorRouting();
+        }
+
+        RefreshTrainingUi();
+    }
+
+    [RelayCommand]
+    private void StartDynamicsTraining()
+    {
+        if (!IsMonitorEnabled)
+        {
+            IsMonitorEnabled = true;
+            UpdateMonitorRouting();
+        }
+
+        var focus = TrainingFocusSelectedPad ? SelectedPad?.Index : null;
+        _dynamicsTrainer.Configure(
+            SelectedDynamicsPattern,
+            TrainingDurationSec,
+            TrainingTolerance,
+            20,
+            110,
+            focus);
+        _dynamicsTrainer.Start();
+        _trainingUiTimer.Start();
+        IsTrainingRunning = true;
+        TrainingStatusLabel = focus is int idx
+            ? $"Treino ativo — foque no pad {Pads.FirstOrDefault(p => p.Index == idx)?.Name ?? idx.ToString()}."
+            : "Treino ativo — qualquer pad.";
+        StatusMessage = "Dynamics training iniciado (estilo Beat Studio).";
+        RefreshTrainingUi();
+    }
+
+    [RelayCommand]
+    private void StopDynamicsTraining()
+    {
+        _dynamicsTrainer.Stop();
+        _trainingUiTimer.Stop();
+        IsTrainingRunning = false;
+        TrainingStatusLabel = $"Parado. Score final: {_dynamicsTrainer.ScorePercent:0}% ({_dynamicsTrainer.InToleranceCount}/{_dynamicsTrainer.HitCount}).";
+        RefreshTrainingUi();
+    }
+
+    [RelayCommand]
+    private void ResetDynamicsTraining()
+    {
+        _dynamicsTrainer.Reset();
+        _trainingUiTimer.Stop();
+        IsTrainingRunning = false;
+        TrainingStatusLabel = "Resetado. Pronto para novo treino.";
+        RefreshTrainingUi();
+    }
+
+    private void RefreshTrainingUi()
+    {
+        IsTrainingRunning = _dynamicsTrainer.IsRunning;
+        TrainingProgressLabel = $"{_dynamicsTrainer.ElapsedSec:0.0} / {_dynamicsTrainer.DurationSec:0.0} s";
+        TrainingScoreLabel = _dynamicsTrainer.HitCount == 0
+            ? "Score: —"
+            : $"Score: {_dynamicsTrainer.ScorePercent:0}%  ({_dynamicsTrainer.InToleranceCount}/{_dynamicsTrainer.HitCount} na faixa)";
+
+        if (_dynamicsTrainer.IsRunning && _dynamicsTrainer.ElapsedSec >= _dynamicsTrainer.DurationSec)
+        {
+            _dynamicsTrainer.Stop();
+            _trainingUiTimer.Stop();
+            IsTrainingRunning = false;
+            TrainingStatusLabel = $"Concluído! Score: {_dynamicsTrainer.ScorePercent:0}%.";
+            StatusMessage = TrainingStatusLabel;
+        }
+
+        OnPropertyChanged(nameof(DynamicsTrainer));
     }
 
     [RelayCommand]
@@ -736,6 +846,7 @@ public partial class MainViewModel : ViewModelBase
     {
         OnPropertyChanged(nameof(IsConfigPage));
         OnPropertyChanged(nameof(IsAnalyticsPage));
+        OnPropertyChanged(nameof(IsTrainingPage));
     }
 
     partial void OnPadSearchTextChanged(string value) => RefreshPadListVisibility();
@@ -842,6 +953,7 @@ public partial class MainViewModel : ViewModelBase
         var pad = Pads.FirstOrDefault(p => p.Index == padIndex);
         pad?.RegisterHit(velocity);
         _analytics.RecordHit(padIndex, velocity);
+        _dynamicsTrainer.TryRecordHit(padIndex, velocity, out _);
 
         if (IsWizardActive && SelectedPad?.Index == padIndex)
         {
@@ -1057,6 +1169,7 @@ public partial class MainViewModel : ViewModelBase
         _hitDecayTimer.Stop();
         _analyticsRefreshTimer.Stop();
         _historyDebounceTimer.Stop();
+        _trainingUiTimer.Stop();
         _client.PadHitReceived -= OnPadHitReceived;
         _midiInput.NoteReceived -= OnMidiNoteReceived;
         _analytics.HistoryChanged -= OnAnalyticsHistoryChanged;
