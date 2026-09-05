@@ -29,7 +29,7 @@ public partial class PadViewModel : ObservableObject
 
             _pad.Name = value;
             OnPropertyChanged();
-            OnPropertyChanged(nameof(Summary));
+            NotifyConfigChanged();
         }
     }
 
@@ -45,7 +45,7 @@ public partial class PadViewModel : ObservableObject
 
             _pad.Type = value;
             OnPropertyChanged();
-            OnPropertyChanged(nameof(Summary));
+            NotifyConfigChanged();
         }
     }
 
@@ -62,7 +62,7 @@ public partial class PadViewModel : ObservableObject
             _pad.Note = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(NoteLabel));
-            OnPropertyChanged(nameof(Summary));
+            NotifyConfigChanged();
         }
     }
 
@@ -104,6 +104,7 @@ public partial class PadViewModel : ObservableObject
 
             _pad.Curve = value;
             OnPropertyChanged();
+            NotifyConfigChanged();
         }
     }
 
@@ -139,6 +140,26 @@ public partial class PadViewModel : ObservableObject
 
     public string Summary => $"{Type} · {NoteLabel} · thr {Threshold}";
 
+    public event Action? ConfigChanged;
+
+    private void NotifyConfigChanged()
+    {
+        ConfigChanged?.Invoke();
+        OnPropertyChanged(nameof(Summary));
+    }
+
+    [ObservableProperty]
+    private bool _hasDiff;
+
+    [ObservableProperty]
+    private bool _isMonitorMuted;
+
+    [ObservableProperty]
+    private bool _isBatchSelected;
+
+    [ObservableProperty]
+    private bool _isVisibleInList = true;
+
     [ObservableProperty]
     private int _lastHitValue;
 
@@ -157,9 +178,13 @@ public partial class PadViewModel : ObservableObject
         OnPropertyChanged(nameof(HitLevelPercent));
     }
 
-    public void DecayHit(int amount = 6)
+    /// <summary>
+    /// Peak-hold: keep bar at last hit so the user can read force.
+    /// Optional slow fade only after idle (call with hold=false to fade).
+    /// </summary>
+    public void DecayHit(int amount = 6, bool holdLastHit = true)
     {
-        if (HitLevel <= 0)
+        if (holdLastHit || HitLevel <= 0)
         {
             return;
         }
@@ -195,6 +220,7 @@ public partial class PadViewModel : ObservableObject
         _pad.Channel = pad.Channel;
 
         OnPropertyChanged(string.Empty);
+        NotifyConfigChanged();
     }
 
     private void SetByte(byte value, Action<byte> assign, string propertyName)
@@ -220,9 +246,6 @@ public partial class PadViewModel : ObservableObject
 
         assign(value);
         OnPropertyChanged(propertyName);
-        if (propertyName == nameof(Threshold))
-        {
-            OnPropertyChanged(nameof(Summary));
-        }
+        NotifyConfigChanged();
     }
 }

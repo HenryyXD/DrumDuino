@@ -7,6 +7,10 @@
 
     <Application.Resources>
         <conv:ByteToDoubleConverter x:Key="ByteToDouble" />
+        <conv:EditorSectionToBoolConverter x:Key="EditorSectionToBool" />
+        <conv:IntEqualsConverter x:Key="IntEquals" />
+        <conv:BoolToOpacityConverter x:Key="BoolToOpacity" />
+        <conv:MuteToOpacityConverter x:Key="MuteToOpacity" />
     </Application.Resources>
 
     <Application.DataTemplates>
